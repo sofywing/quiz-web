@@ -107,6 +107,14 @@ def add_links():
         action = input("Додати зв'язок? (y/n)")
     close()
 
+def get_quizes():
+    open()
+    cursor.execute("SELECT * FROM quiz")
+    quizes = cursor.fetchall()
+    close()
+    return quizes
+
+
    
 def main():
     #create_tables()
@@ -114,4 +122,4 @@ def main():
     #add_questions()
     add_links()
 
-main()
+#main()
