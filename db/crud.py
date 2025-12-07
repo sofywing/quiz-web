@@ -128,6 +128,15 @@ def get_question_after(quiz_id=1, question_id=0):
    close()
    return question
 
+def check_right_answer(question_id, selected_answer):
+    open()
+    cursor.execute('''SELECT answer FROM questions WHERE id = ?''', 
+    [question_id])
+    right_answer = cursor.fetchone()[0]
+    if selected_answer == right_answer:
+        return True
+    else:
+        return False
 
    
 def main():

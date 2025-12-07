@@ -6,12 +6,13 @@
     <title>Тестування</title>
 </head>
 <body>
-    <h1>{{ quest }}</h1>
-    <ul>
+    <form method="POST" action="/test">
+        <input type="hidden" value="{{ question_id }}" name="quest_id">
+        <h1>{{ quest }}</h1>
         {% for answer in ans_list %}
-        <input type="radio" value="{{ answer }}">{{ answer }}
+        <input type="radio" name="ans" value="{{ answer }}">{{ answer }}
         {% endfor %}
         <button type="submit">Відповісти</button>
-    </ul>
+    </form>
 </body>
 </html>
