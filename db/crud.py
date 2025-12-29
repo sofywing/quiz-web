@@ -137,6 +137,12 @@ def check_right_answer(question_id, selected_answer):
         return True
     else:
         return False
+    
+def create_quiz_db(title, description):
+    open()
+    cursor.execute('INSERT INTO quiz (title, description) VALUES (?, ?)', [title, description])
+    conn.commit()
+    close()
 
    
 def main():
