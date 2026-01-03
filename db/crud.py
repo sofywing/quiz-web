@@ -144,6 +144,20 @@ def create_quiz_db(title, description):
     conn.commit()
     close()
 
+def create_question_by_quiz(question: list[str]) -> int:
+    open()
+    cursor.execute("""INSERT INTO questions (question, answer, wrong1, wrong2, wrong3) VALUES (?, ?, ?, ?, ?) RETURNING id""", question)
+    question_id = cursor.fetchone()[0]
+    conn.commit()
+    close()
+    return question_id
+
+def add_link(quiz_id: int, question_id: int) -> None: 
+    """"Створення звязку вікторини з питаннями"""
+    open()
+    cursor.execute("""INSERT INTO quiz_questions (quiz_id, question_id) VALUES(?, ?)""", [quiz_id, question_id])
+    conn.commit()
+    close()
    
 def main():
     #create_tables()

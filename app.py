@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from db.crud import get_quizes, get_question_after, check_right_answer, create_quiz_db
+from db.crud import get_quizes, get_question_after, check_right_answer, create_quiz_db, create_question_by_quiz, add_link
 from random import shuffle
 
 
@@ -84,7 +84,15 @@ def create_quiz():
 
 @app.route("/create-question", methods=["GET", "POST"])
 def create_question():
-    pass
+    if request.method == "POST":
+        quiz_id = request.form.get("quiz_id")
+        question = request.form.getlist("question[]")
+        question_id = create_question_by_quiz(question)
+        add_link(quiz_id, question_id)
+        return redirect(url_for('index'))
+    quizes = get_quizes()
+    return render_template("create_question.html", quizes_list=quizes)
+
 
 @app.route("/all-results")
 def all_results():
