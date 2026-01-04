@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from db.crud import get_quizes, get_question_after, check_right_answer, create_quiz_db, create_question_by_quiz, add_link
+from db.crud import get_quizes, get_question_after, check_right_answer, create_quiz_db, create_question_by_quiz, add_link, create_tables_results, add_result, get_all_results
 from random import shuffle
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '12345678'
+
 
 def start_session(quiz_id=0):
     session["quiz_id"] = quiz_id
@@ -41,7 +42,9 @@ def index():
         return render_template("index.html", quizes_list=quizes)
     else:
         quiz_id = request.form.get("quiz")
+        name = request.form.get("name")
         start_session(quiz_id)
+        session["name"] = name
         return redirect(url_for("test"))
 
 @app.route("/test", methods=["GET", "POST"])
@@ -65,10 +68,16 @@ def test():
 
 @app.route("/result")
 def result():
+    name = session["name"]
+    correct = session["correct_ans"]
+    wrong = session["wrong_ans"]
+    total = session["total"]
+    quiz_id = session["quiz_id"]
+    add_result(name, correct, wrong, total, quiz_id)
     result = render_template("result.html",
-                            right=session['correct_ans'],
-                            wrong=session['wrong_ans'],
-                            total=session['total'])
+                            right=correct,
+                            wrong=wrong,
+                            total=total)
     session.clear()
     return result
 
@@ -96,7 +105,8 @@ def create_question():
 
 @app.route("/all-results")
 def all_results():
-    pass
+    results = get_all_results()
+    return render_template("all_results.html", results=results)
 
 if __name__ == '__main__':
     app.run()
